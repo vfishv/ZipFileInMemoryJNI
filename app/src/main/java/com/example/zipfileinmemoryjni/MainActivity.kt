@@ -121,8 +121,7 @@ class MainActivity : AppCompatActivity() {
         val usedMemInBytes = nativeHeapSize - nativeHeapFreeSize
         val usedMemInPercentage = usedMemInBytes * 100 / nativeHeapSize
         val sDesc = desc?.run { "$this:\n" }
-        Log.d(
-            "AppLog", "$sDesc total:${Formatter.formatFileSize(this, nativeHeapSize)} " +
+        Log.d(TAG, "$sDesc total:${Formatter.formatFileSize(this, nativeHeapSize)} " +
                     "free:${Formatter.formatFileSize(this, nativeHeapFreeSize)} " +
                     "used:${Formatter.formatFileSize(this, usedMemInBytes)} ($usedMemInPercentage%)"
         )
