@@ -15,6 +15,9 @@ import java.io.InputStream
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+
+    private val TAG = "Applog"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,11 +51,11 @@ class MainActivity : AppCompatActivity() {
                     resources.openRawResource(R.raw.appapk)
                 }
             if (bufferSize > Int.MAX_VALUE) {
-                Log.d("Applog", "File size exceeds maximum of ${Int.MAX_VALUE}")
+                Log.d(TAG, "File size exceeds maximum of ${Int.MAX_VALUE}")
                 inStream.close()
                 runOnUiThread {
                     showIdle()
-                    Log.d("Applog", "Error!")
+                    Log.d(TAG, "Error!")
                 }
                 return@thread
             }
@@ -69,23 +72,23 @@ class MainActivity : AppCompatActivity() {
                 }
 
             if (byteBuffer == null) {
-                Log.d("Applog", "Failed to allocate $bufferSize bytes of native memory.")
+                Log.d(TAG, "Failed to allocate $bufferSize bytes of native memory.")
             } else {
                 Log.d(
-                    "Applog",
+                    TAG,
                     "Allocated ${Formatter.formatFileSize(this, bufferSize)} buffer."
                 )
                 val inBytes = ByteArray(4096)
-                Log.d("Applog", "Starting buffered read...")
+                Log.d(TAG, "Starting buffered read...")
                 while (inStream.available() > 0) {
                     byteBuffer.put(inBytes, 0, inStream.read(inBytes))
                 }
                 inStream.close()
                 byteBuffer.flip()
                 ZipFile(ByteBufferChannel(byteBuffer)).use {
-                    Log.d("Applog", "Starting Zip file name dump...")
+                    Log.d(TAG, "Starting Zip file name dump...")
                     for (entry in it.entries) {
-                        Log.d("Applog", "Zip name: ${entry.name}")
+                        Log.d(TAG, "Zip name: ${entry.name}")
                         val zis = it.getInputStream(entry)
                         while (zis.available() > 0) {
                             zis.read(inBytes)
@@ -98,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             }
             runOnUiThread {
                 showIdle()
-                Log.d("Applog", "Done!")
+                Log.d(TAG, "Done!")
             }
         }
     }
