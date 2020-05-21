@@ -87,11 +87,14 @@ class MainActivity : AppCompatActivity() {
                 byteBuffer.flip()
                 ZipFile(ByteBufferChannel(byteBuffer)).use {
                     Log.d(TAG, "Starting Zip file name dump...")
+                    //var counter = 0L
+                    var sizeCounter = 0L
                     for (entry in it.entries) {
                         Log.d(TAG, "Zip name: ${entry.name}")
+                        //counter++
                         val zis = it.getInputStream(entry)
                         while (zis.available() > 0) {
-                            zis.read(inBytes)
+                            sizeCounter += zis.read(inBytes)
                         }
                     }
                 }
